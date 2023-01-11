@@ -146,13 +146,13 @@ public class StreamLabService {
         // Write a query that retrieves all of the products in the shopping cart of users who have the role of "Employee".
     	// Return the list
 
-        Role employeerole = roles.findAll().stream().filter(r -> r.getName().equals("Employee")).findFirst().orElse(null);
+//        Role employeerole = roles.findAll().stream().filter(r -> r.getName().equals("Employee")).findFirst().orElse(null);
 //        List<User> employee = users.findAll().stream().filter(u -> u.getRoles().contains(employeerole)).toList();
-        List<ShoppingcartItem> employeecart =shoppingcartitems.findAll().stream().filter(s -> s.getUser().getRoles().equals(employeerole)).toList();
-        List<Product> cartItems = employeecart.stream().map(e -> e.getProduct()).toList();
+//        List<ShoppingcartItem> employeecart = employee.stream().map(e -> e.getShoppingcartItems().)
+//        List<Product> cartItems = employeecart.stream().map(e -> e.getProduct()).toList();
 
 
-    	return cartItems;
+    	return null;
     }
 
     // <><><><><><><><> CUD (Create, Update, Delete) Actions <><><><><><><><><>
@@ -173,9 +173,14 @@ public class StreamLabService {
     {
         // Create a new Product object and add that product to the Products table.
         // Return the product
+        Product newProduct = new Product();
+        newProduct.setName("PS Vita");
+        newProduct.setDescription("New and Improved version of the sony PSP. 4k display touch screen. Front and Rear camera included. Out with the old; In with PS Vita");
+        newProduct.setPrice(300);
+        products.save(newProduct);
     	
 
-    	return null;
+    	return newProduct;
 
     }
 
@@ -190,11 +195,19 @@ public class StreamLabService {
 
     public ShoppingcartItem CProblemTwo()
     {
-    	// Create a new ShoppingCartItem to represent the new product you created being added to the new User you created's shopping cart.
-        // Add the product you created to the user we created in the ShoppingCart junction table.
-        // Return the ShoppingcartItem
+//    	 Create a new ShoppingCartItem to represent the new product you created being added to the new User you created's shopping cart.
+//         Add the product you created to the user we created in the ShoppingCart junction table.
+//         Return the ShoppingcartItem
 
-    	return null;
+        User david = users.findAll().stream().filter(u -> u.getEmail().equals("david@gmail.com")).findFirst().orElse(null);
+        Product product = products.findAll().stream().filter(p -> p.getName().equals("PS Vita")).findFirst().orElse(null);
+        ShoppingcartItem newSCI = new ShoppingcartItem();
+        newSCI.setUser(david);
+        newSCI.setProduct(product);
+        newSCI.setQuantity(2);
+        shoppingcartitems.save(newSCI);
+
+    	return newSCI;
     	
     }
 
@@ -212,15 +225,24 @@ public class StreamLabService {
     {
         // Update the price of the product you created to a different value.
         // Return the updated product
-    	return null;
+
+        Product product = products.findAll().stream().filter(p -> p.getName().equals("PS Vita")).findFirst().orElse(null);
+        product.setPrice(250);
+    	return product;
     }
 
     public User UProblemTwo()
     {
         // Change the role of the user we created to "Employee"
         // HINT: You need to delete the existing role relationship and then create a new UserRole object and add it to the UserRoles table
+        User user = users.findAll().stream().filter(u -> u.getEmail().equals("mike@gmail.com")).findFirst().orElse(null);
+        Role role = roles.findAll().stream().filter(u->u.getUsers().contains(user)).findFirst().orElse(null);
+        role.setName("Employee");
 
-    	return null;
+
+
+
+    	return user;
     }
 
     //BONUS:
